@@ -1,0 +1,88 @@
+<?xml version='1.0'?>
+<sdf version='1.8'>
+  <world name='hallway_world'>
+
+    <!-- lighting -->
+    <!-- <include>
+      <uri>model://sun</uri>
+    </include> -->
+    <light type="directional" name="sun_light">
+      <direction>-0.5 0.5 -1</direction>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1.0</intensity>
+    </light>
+
+
+    <!-- ground plane (neutral) -->
+    <!-- <include>
+      <uri>model://ground_plane</uri>
+    </include> -->
+    <model name="floor_plane">
+      <static>true</static>
+      <link name="floor_link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>200 200</size>
+            </plane>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>200 200</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.5 0.5 0.5 1.0</ambient>
+            <diffuse>0.5 0.5 0.5 1.0</diffuse>
+            <specular>0.1 0.1 0.1 1.0</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    
+    <!-- spawn the hallway URDF as a model using a plugin (we'll spawn via ROS2 spawn_entity) -->
+    <!-- The launch file will load the xacro and spawn it -->
+
+    <!-- A few boxes as furniture/obstacles -->
+    <model name='box1'>
+      <static>false</static>
+      <pose>2 0 0.25 0 0 0</pose>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry><box><size>0.5 0.5 0.5</size></box></geometry>
+        </visual>
+        <inertial><mass>1.0</mass></inertial>
+      </link>
+    </model>
+
+    <model name='box2'>
+      <static>false</static>
+      <pose>5 -0.6 0.25 0 0 0</pose>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry><box><size>0.4 0.4 0.4</size></box></geometry>
+        </collision>
+        <visual name='visual'>
+          <geometry><box><size>0.4 0.4 0.4</size></box></geometry>
+        </visual>
+        <inertial><mass>0.8</mass></inertial>
+      </link>
+    </model>
+
+    <!-- ambient -->
+    <scene>
+      <ambient>0.3 0.3 0.3 1</ambient>
+      <background>0.7 0.8 0.9 1</background>
+    </scene>
+
+  </world>
+</sdf>

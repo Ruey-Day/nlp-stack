@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>digital_twin_hallway</name>
+  <version>0.1.0</version>
+  <description>Digital twin of a hallway for ROS2 + Gazebo</description>
+  <maintainer email="you@example.com">Your Name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>xacro</depend>
+  <exec_depend>ros2launch</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+</package>

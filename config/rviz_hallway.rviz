@@ -1,0 +1,14 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+Visualization Manager:
+  Global Options:
+    Fixed Frame: world
+  Displays:
+    - Class: rviz/TF
+      Enabled: true
+      Name: TF
+    - Class: rviz/RobotModel
+      Enabled: true
+      Name: Robot Model
+      Robot Description Topic: robot_description

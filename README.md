@@ -1,9 +1,16 @@
-# Personal Natrual Language Processing Documentation
+# digital_twin_hallway
 
-## Overview
+A minimal ROS 2 + Gazebo digital twin of a hallway. Includes:
+- Xacro URDF describing a hallway (floor, two walls, ceiling)
+- Gazebo world that spawns the URDF into the environment
+- A launch file to start Gazebo and spawn the hallway model
+- Example RViz config to visualize TF/camera
 
-This repository is a reference for tracking and documenting files and functions I use while learning natrual language processing. It is intended as a structured and searchable resource for future reference.
+Tested with: ROS 2 Humble / Gazebo (use the gazebo_ros launch available in your ROS distro).
 
-## Resources
+## Quick start (local)
 
-[SpaCy Documentation](https://spacy.io/usage/spacy-101)
+1. Clone or create this repo locally:
+   ```bash
+   git clone <your-repo-url>
+   cd digital_twin_hallway
