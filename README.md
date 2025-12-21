@@ -72,17 +72,17 @@ source install/setup.bash
 Launch the Hallway
 To start Gazebo, spawn the hallway model, and publish the robot state:
 ```bash
-ros2 launch digital_twin_hallway hallway.launch.py
+ros2 launch hallway-digital-twin hallway.launch.py
 ```
 
 ### 6. Visualize in RViz
 To see the TF tree and sensor frames, run:
 ```bash
-ros2 run rviz2 rviz2 -d src/digital_twin_hallway/config/hallway_config.rviz
+ros2 run rviz2 rviz2 -d src/hallway-digital-twin/config/hallway_config.rviz
 ```
 ## Project Structure
 ```bash
-digital_twin_hallway/
+hallway-digital-twin/
 ├── config/             # RViz configuration files
 ├── launch/             # Python launch files
 ├── urdf/               # Xacro files (hallway geometry)
