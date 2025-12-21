@@ -2,7 +2,27 @@
 
 A minimal, parametric **ROS 2 + Gazebo** digital twin of a hallway environment. This project provides a foundational corridor world designed for testing mobile robot navigation, SLAM, and sensor integration in a controlled simulation.
 
-[![Digital Twin Hallway Demo](https://img.youtube.com/vi/PunVHiOxUEk/0.jpg)](https://www.youtube.com/watch?v=PunVHiOxUEk)
+<p align="center">
+  <img src="demo1.gif" width="45%">
+  <img src="demo2.gif" width="45%">
+</p>
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <a href="https://www.youtube.com/watch?v=PunVHiOxUEk">
+        <img src="https://img.youtube.com/vi/PunVHiOxUEk/0.jpg" width="100%">
+      </a>
+      <br />
+      <b>Full Demo Video (YouTube)</b>
+    </td>
+
+    <td align="center" width="50%">
+      <img src="demo.gif" width="100%">
+      <br />
+      <b>Autonomous Hallway Navigation</b>
+    </td>
+  </tr>
+</table>
 
 The **Digital Twin** is designed to facilitate "Simulation-to-Reality" (Sim2Real) workflows. Unlike static meshes, this project utilizes **Xacro (XML Macros)** to define the environment. This allows you to:
 
