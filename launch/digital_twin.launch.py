@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-ROS 2 Launch file for Hallway Digital Twin
-Launches Gazebo with hallway world and spawns robot
-"""
-
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -12,11 +6,7 @@ from launch.event_handlers import OnProcessStart
 from launch_ros.actions import Node
 import xacro
 
-def generate_launch_description():
-    """
-    Generate launch description for hallway digital twin
-    """
-    
+def generate_launch_description():    
     # Get package directories
     pkg_path = get_package_share_directory('hallway-digital-twin')
     
@@ -36,14 +26,14 @@ def generate_launch_description():
     print(f"URDF file: {urdf_file}")
     print(f"Temp URDF: {temp_urdf}")
     
-    # 1. Launch Gazebo
+    # Launch Gazebo
     gazebo = ExecuteProcess(
         cmd=['gz', 'sim', world_file, '-r'],
         output='screen',
         name='gazebo'
     )
     
-    # 2. Spawn robot (delayed to let Gazebo start)
+    # Spawn robot (delayed to let Gazebo start)
     spawn_robot = ExecuteProcess(
         cmd=[
             'gz', 'service',
@@ -63,7 +53,7 @@ def generate_launch_description():
         actions=[spawn_robot]
     )
     
-    # 3. Print instructions
+    # Print instructions
     print_instructions = ExecuteProcess(
         cmd=[
             'bash', '-c',
@@ -71,15 +61,7 @@ def generate_launch_description():
             sleep 6
             echo ""
             echo "============================================================"
-            echo "🎮 ROBOT READY FOR TELEOP"
-            echo "============================================================"
-            echo ""
-            echo "Control the robot with Gazebo topics:"
-            echo "  gz topic -t /model/mobile_robot/cmd_vel -m gz.msgs.Twist -p 'linear: {x: 0.5}'"
-            echo ""
-            echo "Or use Python teleop:"
-            echo "  python3 robot_teleop_final.py"
-            echo ""
+            echo "      ROBOT READY
             echo "============================================================"
             echo ""
             '''
