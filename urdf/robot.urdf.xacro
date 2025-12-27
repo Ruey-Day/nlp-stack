@@ -72,15 +72,16 @@
     </visual>
   </link>
 
-  <!-- Gazebo plugins -->
+  <!-- Gazebo plugins - USING GAZEBO TOPICS (NO ROS BRIDGE NEEDED) -->
   <gazebo>
     <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
       <left_joint>left_wheel_joint</left_joint>
       <right_joint>right_wheel_joint</right_joint>
       <wheel_separation>0.4</wheel_separation>
       <wheel_radius>0.1</wheel_radius>
-      <topic>cmd_vel</topic>
-      <odom_topic>odom</odom_topic>
+      <!-- USE GAZEBO TOPICS - No /cmd_vel, uses /model/mobile_robot/cmd_vel -->
+      <topic>/model/mobile_robot/cmd_vel</topic>
+      <odom_topic>/model/mobile_robot/odometry</odom_topic>
       <frame_id>odom</frame_id>
       <child_frame_id>base_link</child_frame_id>
     </plugin>
@@ -109,7 +110,7 @@
       </lidar>
       <always_on>1</always_on>
       <visualize>true</visualize>
-      <topic>scan</topic>
+      <topic>/model/mobile_robot/scan</topic>
       <gz_frame_id>lidar_link</gz_frame_id>
     </sensor>
   </gazebo>
