@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-Teleop for mobile_robot using Gazebo topics
-Control the robot with WASD keys
-"""
-
 import subprocess
 import time
 import sys
@@ -19,7 +13,7 @@ class RobotTeleop:
         self.settings = None
         
         print("\n" + "="*60)
-        print("🎮 MOBILE ROBOT TELEOP")
+        print("MOBILE ROBOT TELEOP")
         print("="*60)
         print(f"\nControl topic: {self.topic}")
         print(f"Initial speed - Linear: {self.linear_speed} m/s, Angular: {self.angular_speed} rad/s")
@@ -46,115 +40,106 @@ class RobotTeleop:
         return None
     
     def run(self):
-        """Main teleop loop"""
         print("\n" + "="*60)
-        print("CONTROLS:")
+        print("INCREMENTAL CONTROLS:")
         print("="*60)
         print("""
-  Movement:
-    W : Forward          Q : Forward + Turn Left
-    S : Backward         E : Forward + Turn Right  
-    A : Turn Left        Z : Backward + Turn Left
-    D : Turn Right       C : Backward + Turn Right
-    
-  Speed Control:
-    + : Increase speed
-    - : Decrease speed
-    
-  Other:
-    Space : Emergency STOP
-    X     : Exit
+    W : +Forward
+    S : -Forward
+    A : +Turn Left
+    D : -Turn Left (Turn Right)
+
+    Q : +Forward  +Left
+    E : +Forward  -Left
+    Z : -Forward  +Left
+    C : -Forward  -Left
+
+    Space : STOP
+    Ctrl+C: Exit
         """)
         print("="*60)
-        print("\nReady! Press keys to drive...\n")
-        
-        # Set terminal to raw mode
+
+        # velocity state
+        self.vx = 0.0
+        self.vy = 0.0
+        self.wz = 0.0
+
+        step_lin = 0.1
+        step_ang = 0.1
+
         self.settings = termios.tcgetattr(sys.stdin)
         tty.setraw(sys.stdin.fileno())
-        
-        last_key = None
-        
+
         try:
             while True:
                 key = self.get_key()
+                if not key:
+                    continue
+
+                # FORWARD / BACKWARD
+                if key.lower() == 'w':
+                    self.vx += step_lin
+
+                elif key.lower() == 's':
+                    self.vx -= step_lin
+
+                # TURNING (left positive)
+                elif key.lower() == 'a':
+                    self.wz += step_ang
+
+                elif key.lower() == 'd':
+                    self.wz -= step_ang
+
+                # COMBINED
+                elif key.lower() == 'q':
+                    self.vx += step_lin
+                    self.wz += step_ang
+
+                elif key.lower() == 'e':
+                    self.vx += step_lin
+                    self.wz -= step_ang
+
+                elif key.lower() == 'z':
+                    self.vx -= step_lin
+                    self.wz += step_ang
+
+                elif key.lower() == 'c':
+                    self.vx -= step_lin
+                    self.wz -= step_ang
+
+                # STOP
+                elif key == ' ':
+                    self.vx = self.vy = self.wz = 0.0
                 
-                if key and key != last_key:
-                    last_key = key
-                    
-                    # Forward/Backward
-                    if key.lower() == 'w':
-                        print(f"\r⬆️  FORWARD {self.linear_speed:.1f} m/s         ", end='', flush=True)
-                        self.send_velocity(linear_x=self.linear_speed)
-                        
-                    elif key.lower() == 's':
-                        print(f"\r⬇️  BACKWARD {self.linear_speed:.1f} m/s        ", end='', flush=True)
-                        self.send_velocity(linear_x=-self.linear_speed)
-                        
-                    # Turning
-                    elif key.lower() == 'a':
-                        print(f"\r↪️  TURN LEFT {self.angular_speed:.1f} rad/s    ", end='', flush=True)
-                        self.send_velocity(angular_z=self.angular_speed)
-                        
-                    elif key.lower() == 'd':
-                        print(f"\r↩️  TURN RIGHT {self.angular_speed:.1f} rad/s   ", end='', flush=True)
-                        self.send_velocity(angular_z=-self.angular_speed)
-                        
-                    # Combined movements
-                    elif key.lower() == 'q':
-                        print(f"\r↖️  FORWARD LEFT                ", end='', flush=True)
-                        self.send_velocity(linear_x=self.linear_speed, angular_z=self.angular_speed)
-                        
-                    elif key.lower() == 'e':
-                        print(f"\r↗️  FORWARD RIGHT               ", end='', flush=True)
-                        self.send_velocity(linear_x=self.linear_speed, angular_z=-self.angular_speed)
-                        
-                    elif key.lower() == 'z':
-                        print(f"\r↙️  BACKWARD LEFT               ", end='', flush=True)
-                        self.send_velocity(linear_x=-self.linear_speed, angular_z=self.angular_speed)
-                        
-                    elif key.lower() == 'c':
-                        print(f"\r↘️  BACKWARD RIGHT              ", end='', flush=True)
-                        self.send_velocity(linear_x=-self.linear_speed, angular_z=-self.angular_speed)
-                        
-                    # Stop
-                    elif key == ' ':
-                        print(f"\r🛑 STOP                         ", end='', flush=True)
-                        self.stop()
-                        
-                    # Speed control
-                    elif key == '+' or key == '=':
-                        self.linear_speed = min(2.0, self.linear_speed + 0.1)
-                        self.angular_speed = min(3.0, self.angular_speed + 0.1)
-                        print(f"\r⚡ SPEED UP - Linear: {self.linear_speed:.1f}, Angular: {self.angular_speed:.1f}   ", end='', flush=True)
-                        
-                    elif key == '-' or key == '_':
-                        self.linear_speed = max(0.1, self.linear_speed - 0.1)
-                        self.angular_speed = max(0.1, self.angular_speed - 0.1)
-                        print(f"\r🐌 SPEED DOWN - Linear: {self.linear_speed:.1f}, Angular: {self.angular_speed:.1f}   ", end='', flush=True)
-                        
-                    # Exit
-                    elif key.lower() == 'x':
-                        print("\r🏁 EXITING...                   ")
-                        self.stop()
-                        break
-                        
-                    elif key == '\x03':  # Ctrl+C
-                        break
-                
+                # clamp for safety
+                self.vx = max(-2.0, min(2.0, self.vx))
+                self.wz = max(-3.0, min(3.0, self.wz))
+
+                # send command
+                self.send_velocity(
+                    linear_x=self.vx,
+                    linear_y=self.vy,
+                    angular_z=self.wz
+                )
+
+                print(
+                    f"\rVx: {self.vx:+.2f} m/s | Wz: {self.wz:+.2f} rad/s     ",
+                    end='', flush=True
+                )
+
                 time.sleep(0.01)
-                
-        except Exception as e:
-            print(f"\n❌ Error: {e}")
-            
+
+        except KeyboardInterrupt:
+            print("\n\nCtrl+C detected — stopping robot")
+
         finally:
             self.stop()
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, self.settings)
-            print("\n\n✓ Robot stopped. Goodbye!\n")
-
+            print("✓ Robot stopped cleanly\n")
 
 def main():
     print("\n" + "="*60)
-    print("🤖 GAZEBO MOBILE ROBOT TELEOP")
+    print("GAZEBO MOBILE ROBOT TELEOP")
     print("="*60)
     print()
     

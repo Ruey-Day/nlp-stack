@@ -41,7 +41,7 @@ def generate_launch_description():
             '--reqtype', 'gz.msgs.EntityFactory',
             '--reptype', 'gz.msgs.Boolean',
             '--timeout', '5000',
-            '--req', f"sdf_filename: '{temp_urdf}', name: 'mobile_robot', pose: {{position: {{x: -4.0, y: 0.0, z: 0.1}}}}"
+            '--req', f"sdf_filename: '{temp_urdf}', name: 'mobile_robot', pose: {{position: {{x: -4.0, y: 0.0, z: 0.5}}}}"
         ],
         output='screen',
         name='spawn_robot'
@@ -53,30 +53,7 @@ def generate_launch_description():
         actions=[spawn_robot]
     )
     
-    # Print instructions
-    print_instructions = ExecuteProcess(
-        cmd=[
-            'bash', '-c',
-            '''
-            sleep 6
-            echo ""
-            echo "============================================================"
-            echo "      ROBOT READY
-            echo "============================================================"
-            echo ""
-            '''
-        ],
-        output='screen',
-        name='instructions'
-    )
-    
-    delayed_instructions = TimerAction(
-        period=6.0,
-        actions=[print_instructions]
-    )
-    
     return LaunchDescription([
         gazebo,
         delayed_spawn,
-        delayed_instructions,
     ])
