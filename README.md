@@ -24,7 +24,9 @@ A minimal, parametric **ROS 2 + Gazebo** digital twin of a hallway environment. 
   </tr>
 </table>
 
-The **Digital Twin** is designed to facilitate "Simulation-to-Reality" (Sim2Real) workflows. Unlike static meshes, this project utilizes **Xacro (XML Macros)** to define the environment. This allows you to:
+## Overview
+
+The digital twin is designed to facilitate "Simulation-to-Reality" (Sim2Real) workflows. Unlike static meshes, this project utilizes **Xacro (XML Macros)** to define the environment. This allows you to:
 
 * **Parameterize Dimensions:** Easily change hallway length, width, or height by editing variables in the Xacro file.
 * **Sensor Testing:** The environment is optimized for LiDAR and Camera plugins to ensure realistic ray-tracing and physics.
@@ -34,59 +36,67 @@ The **Digital Twin** is designed to facilitate "Simulation-to-Reality" (Sim2Real
 
 | Requirement | Specification |
 | :--- | :--- |
-| **Operating System** | Ubuntu 22.04 (Jammy Jellyfish) |
-| **ROS 2 Distro** | Humble Hawksbill |
-| **Gazebo** | Gazebo 11 (Classic) |
+| **Operating System** | Ubuntu 24.04 |
+| **ROS 2 Distro** | Rolling |
+| **Gazebo** | Gazebo Ionic |
 | **Build Tool** | Colcon |
 
 ## Setup Guide
 
 Follow these steps to build and launch the environment on your local machine.
 
-### 1. Create a Workspace
 If you don't have a workspace set up, create one:
 ```bash
-mkdir -p ~/hallway_ws/src
-cd ~/hallway_ws/src
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
 ```
 
-### 2. Clone the Repository
+Clone the Repository
 ```bash
 git clone https://github.com/rueyday/hallway-digital-twin.git
 ```
 
-### 3. Install Dependencies
-Ensure you have the necessary ROS 2 packages for Gazebo and Xacro:
+Build and Source
 ```bash
-cd ~/hallway_ws
-rosdep install -i --from-path src --rosdistro humble -y
-```
-
-### 4. Build and Source
-```bash
+cd ~/ros2_ws
 colcon build --symlink-install
 source install/setup.bash
 ```
 
-### 5. Running the Simulation
 Launch the Hallway
 To start Gazebo, spawn the hallway model, and publish the robot state:
 ```bash
-ros2 launch hallway-digital-twin hallway.launch.py
+ros2 launch hallway-digital-twin digital_twin.launch.py
 ```
 
-### 6. Visualize in RViz
-To see the TF tree and sensor frames, run:
+### Test Drive the Robot and visualize LiDAR Data
+
+Use the provided test drive script to control the robot:
+
 ```bash
-ros2 run rviz2 rviz2 -d src/hallway-digital-twin/config/hallway_config.rviz
+python ~/ros2_ws/src/hallway-digital-twin/scripts/test_drive.py
 ```
-## Project Structure
+
+Run the LiDAR visualization node:
+
 ```bash
+python ~/ros2_ws/src/hallway-digital-twin/scripts/lidar_visualization.py
+```
+
+## Project Structure
+
+```
 hallway-digital-twin/
-├── config/             # RViz configuration files
-├── launch/             # Python launch files
-├── urdf/               # Xacro files (hallway geometry)
-├── worlds/             # Gazebo .world files
-├── CMakeLists.txt      # Build instructions
-└── package.xml         # Package metadata
+├── launch/                     # Launch files
+│   └── digital_twin.launch.py  # Main launch file
+├── urdf/                       # Robot and environment descriptions
+│   └── *.xacro                 # Xacro model files
+├── worlds/                     # Gazebo world files
+│   └── hallway_world.sdf       # Main hallway world
+├── scripts/                    # Python scripts
+│   ├── test_drive.py           # Robot control test
+│   └── lidar_visualization.py  # LiDAR data visualizer
+├── CMakeLists.txt              # Build configuration
+├── package.xml                 # Package metadata
+└── README.md                   # This file
 ```
