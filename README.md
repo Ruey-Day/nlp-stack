@@ -3,26 +3,15 @@
 A minimal, parametric **ROS 2 + Gazebo** digital twin of a hallway environment. This project provides a foundational corridor world designed for testing mobile robot navigation, SLAM, and sensor integration in a controlled simulation.
 
 <p align="center">
-  <img src="demo1.gif" width="45%">
-  <img src="demo2.gif" width="45%">
+  <img src="demo.gif" width="45%">
 </p>
-<table>
-  <tr>
-    <td align="center" width="50%">
-      <a href="https://www.youtube.com/watch?v=PunVHiOxUEk">
-        <img src="https://img.youtube.com/vi/PunVHiOxUEk/0.jpg" width="100%">
-      </a>
-      <br />
+<tr>
+  <td align="center" width="50%">
+    <a href="https://www.youtube.com/watch?v=RyhKSUHeHf8">
       <b>Full Demo Video (YouTube)</b>
-    </td>
-
-    <td align="center" width="50%">
-      <img src="demo.gif" width="100%">
-      <br />
-      <b>Autonomous Hallway Navigation</b>
-    </td>
-  </tr>
-</table>
+    </a>
+   </td>
+</tr>
 
 ## Overview
 
