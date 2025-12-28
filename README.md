@@ -13,14 +13,6 @@ A minimal, parametric **ROS 2 + Gazebo** digital twin of a hallway environment. 
    </td>
 </tr>
 
-## Overview
-
-The digital twin is designed to facilitate "Simulation-to-Reality" (Sim2Real) workflows. Unlike static meshes, this project utilizes **Xacro (XML Macros)** to define the environment. This allows you to:
-
-* **Parameterize Dimensions:** Easily change hallway length, width, or height by editing variables in the Xacro file.
-* **Sensor Testing:** The environment is optimized for LiDAR and Camera plugins to ensure realistic ray-tracing and physics.
-* **Lightweight Simulation:** High-fidelity visuals with low computational overhead, making it ideal for testing navigation stacks.
-
 ## Prerequisites
 
 | Requirement | Specification |
