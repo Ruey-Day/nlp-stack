@@ -64,8 +64,8 @@ class RobotTeleop:
         self.vy = 0.0
         self.wz = 0.0
 
-        step_lin = 0.1
-        step_ang = 0.1
+        step_lin = 0.3
+        step_ang = 0.3
 
         self.settings = termios.tcgetattr(sys.stdin)
         tty.setraw(sys.stdin.fileno())
@@ -112,8 +112,8 @@ class RobotTeleop:
                     self.vx = self.vy = self.wz = 0.0
                 
                 # clamp for safety
-                self.vx = max(-2.0, min(2.0, self.vx))
-                self.wz = max(-3.0, min(3.0, self.wz))
+                self.vx = -max(-2.0, min(2.0, self.vx))
+                self.wz = -max(-3.0, min(3.0, self.wz))
 
                 # send command
                 self.send_velocity(
